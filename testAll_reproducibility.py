@@ -460,6 +460,24 @@ def callFunction(arg):
     funcname, args = arg
     return globals()[funcname](**args)
 
+def get_logpaths_with_changepoints_adjusted():
+    # Setup all Paths to logs alongside their change point locations
+
+    gold_standard = pd.read_csv(Path("EvaluationLogs", "synthetic_logs2", "gold_standard.csv"))
+
+    logPaths_Changepoints = []
+    for root, dirs, files in os.walk(Path("EvaluationLogs", "synthetic_logs2")):
+        for file in files:
+            if file.endswith('.xes'):
+                path = Path(root, file).as_posix()
+                log_name = Path(root, file).stem + Path(root, file).suffix
+                change_points_temp = gold_standard[gold_standard.log_name == log_name].change_point
+                change_points = eval(change_points_temp.values[0])
+                logPaths_Changepoints.append((path, change_points))
+
+    return logPaths_Changepoints
+
+
 def get_logpaths_with_changepoints():
     # Setup all Paths to logs alongside their change point locations
     logPaths_Changepoints = [
@@ -527,7 +545,8 @@ def main(test_run:bool = False, num_cores:int = None):
     if num_cores is None:
         num_cores = cpu_count() - 2
 
-    logPaths_Changepoints = get_logpaths_with_changepoints()
+    #logPaths_Changepoints = get_logpaths_with_changepoints()
+    logPaths_Changepoints = get_logpaths_with_changepoints_adjusted()
 
     ## Load the Arguments from testAll_config.yml ##
     config = None
