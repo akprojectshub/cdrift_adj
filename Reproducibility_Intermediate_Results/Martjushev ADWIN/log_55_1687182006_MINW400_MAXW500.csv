@@ -1,0 +1,2 @@
+Algorithm,Log Source,Log,P-Value,Min Adaptive Window,Max Adaptive Window,ADWIN Step Size,Detected Changepoints,Actual Changepoints for Log,F1-Score,Average Lag,Duration,Duration (Seconds),Seconds per Case
+Martjushev ADWIN J,with_noise_20,log_55_1687182006,0.4,400,500,10,[1219],"[1185, 1392]",0.6666666666666666,34.0,00:00:01,1.7897149780765176,0.0006503324774987346
