@@ -16,7 +16,7 @@ approaches:
       do_wc: False
     params:
       window_size: *winsizes
-  Martjushev ADWIN:
+    Martjushev ADWIN:
     function: "testMartjushev_ADWIN"
     enabled: False
     meta-params:
