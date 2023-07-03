@@ -13,3 +13,4 @@ __pycache__
 .idea/cdrift_adj.iml
 .idea/.gitignore
 #Reproducibility_Intermediate_Results/
+EvaluationLogs/*.xes
