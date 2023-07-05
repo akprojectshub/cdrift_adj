@@ -1,2 +1,0 @@
-Algorithm,Log Source,Log,P-Value,Min Adaptive Window,Max Adaptive Window,Detected Changepoints,Actual Changepoints for Log,F1-Score,Average Lag,Duration,Duration (Seconds),Seconds per Case
-Process Graph Metrics,with_noise_10,log_22_1687181941,0.1,300,700,"[1286, 2769, 3611]","[1159, 1512, 2578, 3506, 3838]",0.7499999999999999,141.0,00:00:28,28.422816763632,0.006059010181972287
