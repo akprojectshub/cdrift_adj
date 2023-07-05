@@ -1,0 +1,2 @@
+Algorithm,Log Source,Log,MRID,Epsilon,Detected Changepoints,Actual Changepoints for Log,F1-Score,Average Lag,Duration,Duration (Seconds),Seconds per Case
+Zheng DBSCAN,with_noise_10,log_7_1687181925,600,120.0,"[876.0, 1164.0, 1388.0, 2025.0, 2451.0, 2717.0, 3074.266666666667, 3492.25, 3988.0, 4663.0]","[920, 1720, 2103, 3052, 3413]",0.5333333333333333,55.87916666666672,00:00:00,0.5733053451403975,0.0001206704578279094
