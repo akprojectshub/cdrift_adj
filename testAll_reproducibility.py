@@ -467,7 +467,8 @@ def get_logpaths_with_changepoints_adjusted():
     gold_standard = pd.read_csv(Path("EvaluationLogs", "gold_standard.csv"))
 
     logPaths_Changepoints = []
-    for root, dirs, files in os.walk(Path("EvaluationLogs", "without_noise")):
+    #for root, dirs, files in os.walk(Path("EvaluationLogs", "without_noise")):
+    for root, dirs, files in os.walk(Path("EvaluationLogs")):
         for file in files:
             if file.endswith('.xes'):
                 path = Path(root, file).as_posix()
