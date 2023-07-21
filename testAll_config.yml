@@ -33,7 +33,7 @@ approaches:
       step_size: &stepsizes [10, 20, 50]
   Earthmover:
     function: "testEarthMover"
-    enabled: True
+    enabled: False
     params:
       window_size: *winsizes
       step_size: *sw_stepsizes
