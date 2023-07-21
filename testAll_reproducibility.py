@@ -273,12 +273,15 @@ def testEarthMover(filepath, window_size, step_size, F1_LAG, cp_locations, posit
     startTime = default_timer()
 
     # Earth Mover's Distance
-    traces = earthmover.extractTraces(log)
+    #traces = earthmover.extractTraces(log)
     # em_dists = earthmover.calculateDistSeries(traces, window_size, show_progressBar=show_progress_bar, progressBar_pos=LINE_NR)
-
     # cp_em = earthmover.visualInspection(em_dists, window_size)
 
-    cp_em = earthmover.detect_change(log, window_size, step_size, show_progress_bar=show_progress_bar, progress_bar_pos=LINE_NR)
+    try:
+        cp_em = earthmover.detect_change(log, window_size, step_size, show_progress_bar=show_progress_bar, progress_bar_pos=LINE_NR)
+    except:
+        print(f"EMD failed: {filepath}, {window_size}, {step_size}")
+        cp_em = []
 
     endTime = default_timer()
     durStr = calcDurationString(startTime, endTime)
