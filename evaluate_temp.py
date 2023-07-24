@@ -12,14 +12,7 @@ import re
 import os
 from pathlib import Path
 
-LAG_WINDOW = 200
-MIN_SUPPORT = 1 # Minimum support for latency calculation --> a parameter setting must have at least 3 instances where a true positive was detected before it can be deemed the "best parameter setting" for latency calculation
 
-CSV_PATH = "algorithm_results.csv"
-OUT_PATH = "Evaluation_Results"
-
-plt.rcParams['pdf.fonttype'] = 42
-plt.rcParams['ps.fonttype'] = 42
 
 
 def calcAccuracy(df: pd.DataFrame, param_names: List[str], lag_window: int):
@@ -71,7 +64,7 @@ def calcAccuracy(df: pd.DataFrame, param_names: List[str], lag_window: int):
     return (precisions, recalls, f1s)
 
 
-def calculate_accuracy_metric_df(dataframe, lag_window, verbose=True):
+def calculate_accuracy_metric_df(dataframe, lag_window, used_parameters, verbose=True):
     computed_accuracy_dicts = dict()
     computed_precision_dicts = dict()
     computed_recall_dicts = dict()
@@ -80,87 +73,45 @@ def calculate_accuracy_metric_df(dataframe, lag_window, verbose=True):
 
     accuracies = dict()
     for name, a_df in dataframe.groupby(by="Algorithm"):
-        computed_precision_dicts[name], computed_recall_dicts[name], computed_accuracy_dicts[name] = calcAccuracy(a_df,
-                                                                                                                  used_parameters[
-                                                                                                                      name],
-                                                                                                                  lag_window)
-
+        computed_precision_dicts[name], computed_recall_dicts[name], computed_accuracy_dicts[name] = calcAccuracy(a_df, used_parameters[name], lag_window)
         best_param = max(computed_accuracy_dicts[name], key=lambda x: computed_accuracy_dicts[name][x])
-
         accuracy_best_param[name] = best_param
-
         # accuracies[name] = max(computed_accuracy_dicts[name].values())
         accuracies[name] = computed_accuracy_dicts[name][best_param]
         if verbose:
             print(f"{name}: {accuracies[name]}")
-
     return (accuracies, computed_accuracy_dicts, computed_precision_dicts, computed_recall_dicts, accuracy_best_param)
 
 def main():
+    LAG_WINDOW = 200
+
+    CSV_PATH = Path("ResultsCDLG", "with_noise", "algorithm_results.csv")
+    OUT_PATH = Path("ResultsCDLG", "with_noise", "algorithm_results_evaluation.csv")
+
 
     df = readCSV_Lists(CSV_PATH)
-    df.copy()
-    print(df["Algorithm"].unique())
+    #df.copy()
+    #print(df["Algorithm"].unique())
 
-    ['Martjushev ADWIN J' 'Process Graph Metrics' "Earth Mover's Distance"
-     'LCDD' 'Maaradji Runs' 'Martjushev J' 'Bose J' 'Bose WC' 'Zheng DBSCAN']
-
-    shorter_names = {
-        "Martjushev ADWIN J": "ADWIN J",
-        "Process Graph Metrics": "PGM",
-        "Earth Mover's Distance": "EMD",
-        "LCDD": "LCDD",
-        "Maaradji Runs":
-        "Martjushev J":
-        "Bose J": "J-Measure",
-        "Bose WC":  "Window Count",
-        "Zheng DBSCAN":  "RINV"
-    }
-
-    shorter_names = {
-        "Zheng DBSCAN": "RINV",
-        "ProDrift": "ProDrift",
-        "Bose J": ,
-        "Bose WC": "Window Count",
-        "Martjushev ADWIN WC": "ADWIN WC",
-
-
-
-    shorter_names = {
-        "Zheng DBSCAN": "RINV",
-        "ProDrift": "ProDrift",
-        "Bose J": "J-Measure",
-        "Bose WC": "Window Count",
-        "Earth Mover's Distance": "EMD",
-        "Process Graph Metrics": "PGM",
-        "Martjushev ADWIN J": "ADWIN J",
-        "Martjushev ADWIN WC": "ADWIN WC",
-        "LCDD": "LCDD"
-    }
-    df["Algorithm"] = df["Algorithm"].map(shorter_names)
-    print(df["Algorithm"].unique())
+    #['Martjushev ADWIN J', 'Process Graph Metrics', 'Zheng DBSCAN', 'LCDD', 'Maaradji Runs', 'Martjushev J', 'Bose J' 'Bose WC']
 
     used_parameters = {
             "Bose J": ["Window Size", "SW Step Size"],
             "Bose WC": ["Window Size", "SW Step Size"],
-            "Martjushev ADWIN J": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
-            "Martjushev ADWIN WC": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
-            "ProDrift": ["Window Size", "SW Step Size"],
+            "Martjushev J": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
+            #"Martjushev WC": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
+            "Maaradji Runs": ["Window Size", "SW Step Size"],
             "Earth Mover's Distance": ["Window Size", "SW Step Size"],
             "Process Graph Metrics": ["Min Adaptive Window", "Max Adaptive Window", "P-Value"],
             "Zheng DBSCAN": ["MRID", "Epsilon"],
             "LCDD": ["Complete-Window Size", "Detection-Window Size", "Stable Period"]
         }
 
-    used_parameters = {
-        shorter_names[name]: used_parameters[name]
-        for name in used_parameters.keys()
-    }
-
     df_noiseless = df["Log"]
 
-    accuracies, computed_accuracy_dicts, computed_precision_dicts, computed_recall_dicts, accuracy_best_param = calculate_accuracy_metric_df(df_noiseless, LAG_WINDOW, verbose=False)
-
+    accuracies, computed_accuracy_dicts, computed_precision_dicts, computed_recall_dicts, accuracy_best_param = calculate_accuracy_metric_df(df, LAG_WINDOW, used_parameters, verbose=False)
+    print(accuracies)
+    print(accuracy_best_param)
     pd.DataFrame([{'Algorithm': name, 'Accuracy': accuracies[name]} for name in accuracies.keys()]).sort_values(by="Algorithm", ascending=True)
 
 
