@@ -467,7 +467,7 @@ def callFunction(arg):
 def get_logpaths_with_changepoints_adjusted():
     # Setup all Paths to logs alongside their change point locations
 
-    gold_standard = pd.read_csv(Path("EvaluationLogs", "gold_standard.csv"))
+    gold_standard = pd.read_csv(Path("EvaluationLogs", "drift_1_D", "gold_standard.csv"))
 
     logPaths_Changepoints = []
     #for root, dirs, files in os.walk(Path("EvaluationLogs", "without_noise")):
