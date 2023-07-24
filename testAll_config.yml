@@ -1,7 +1,7 @@
 approaches:
   Bose:
     function: "testBose"
-    enabled: False
+    enabled: True
     meta-params:
       do_j: True
       do_wc: True
@@ -10,7 +10,7 @@ approaches:
       step_size: &sw_stepsizes [2]
   Martjushev:
     function: "testMartjushev"
-    enabled: False
+    enabled: True
     meta-params:
       do_j: True # True, but doesn't matter since enabled=False
       do_wc: False
@@ -18,7 +18,7 @@ approaches:
       window_size: *winsizes
   Martjushev ADWIN:
     function: "testMartjushev_ADWIN"
-    enabled: False
+    enabled: True
     meta-params:
       do_j: True
       do_wc: False
@@ -39,25 +39,25 @@ approaches:
       step_size: *sw_stepsizes
   Maaradji:
     function: "testMaaradji"
-    enabled: False
+    enabled: True
     params:
       window_size: [50, 100, 150, 200, 250, 300]
       step_size: *sw_stepsizes
   ProcessGraph:
     function: "testGraphMetrics"
-    enabled: False
+    enabled: True
     params:
       min_max_window_pair: *min_max_win_pair
       pvalue: [0.1, 0.05, 0.005, 0.0001]
   Zheng:
     function: "testZhengDBSCAN"
-    enabled: False
+    enabled: True
     params:
       mrid: [300, 400, 500, 600]
       eps_modifiers: [[0.1, 0.2, 0.3, 0.4, 0.5]] # Has to be double list to signify that this is a single parameter, not a list of possible params
   LCDD:
     function: "testLCDD"
-    enabled: False
+    enabled: True
     params:
       stable_period: [5, 10, 20, 50, 100, 150, 200]
       window_pairs: [[100, 100], [200, 200], [300, 300]]

@@ -471,7 +471,7 @@ def get_logpaths_with_changepoints_adjusted():
 
     logPaths_Changepoints = []
     #for root, dirs, files in os.walk(Path("EvaluationLogs", "without_noise")):
-    for root, dirs, files in os.walk(Path("EvaluationLogs")):
+    for root, dirs, files in os.walk(Path("EvaluationLogs", "drift_1_D")):
         for file in files:
             if file.endswith('.xes'):
                 path = Path(root, file).as_posix()
