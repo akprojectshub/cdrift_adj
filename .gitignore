@@ -14,4 +14,6 @@ __pycache__
 .idea/.gitignore
 Reproducibility_Intermediate_Results/
 backups/
-#EvaluationLogs/
+EvaluationLogs/
+!EvaluationLogs/cdrift_1_D
+EvaluationLogs/*.xes
