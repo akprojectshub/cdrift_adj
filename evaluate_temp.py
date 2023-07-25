@@ -78,7 +78,7 @@ def calculate_accuracy_metric_df(dataframe, lag_window, used_parameters, verbose
         try:
             best_param = max(computed_accuracy_dicts[name], key=lambda x: computed_accuracy_dicts[name][x])
         except:
-            best_param = 'na'
+            continue
         accuracy_best_param[name] = best_param
         # accuracies[name] = max(computed_accuracy_dicts[name].values())
         accuracies[name] = computed_accuracy_dicts[name][best_param]
