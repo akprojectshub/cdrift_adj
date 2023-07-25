@@ -75,7 +75,10 @@ def calculate_accuracy_metric_df(dataframe, lag_window, used_parameters, verbose
     for name, a_df in dataframe.groupby(by="Algorithm"):
         print(f"WIP: {name}")
         computed_precision_dicts[name], computed_recall_dicts[name], computed_accuracy_dicts[name] = calcAccuracy(a_df, used_parameters[name], lag_window)
-        best_param = max(computed_accuracy_dicts[name], key=lambda x: computed_accuracy_dicts[name][x])
+        try:
+            best_param = max(computed_accuracy_dicts[name], key=lambda x: computed_accuracy_dicts[name][x])
+        except:
+            best_param = 'na'
         accuracy_best_param[name] = best_param
         # accuracies[name] = max(computed_accuracy_dicts[name].values())
         accuracies[name] = computed_accuracy_dicts[name][best_param]
