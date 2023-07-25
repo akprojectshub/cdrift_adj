@@ -99,6 +99,7 @@ def main():
             "Bose J": ["Window Size", "SW Step Size"],
             "Bose WC": ["Window Size", "SW Step Size"],
             "Martjushev J": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
+            "Martjushev ADWIN J": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
             #"Martjushev WC": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
             "Maaradji Runs": ["Window Size", "SW Step Size"],
             "Earth Mover's Distance": ["Window Size", "SW Step Size"],
