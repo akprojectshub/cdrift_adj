@@ -73,6 +73,7 @@ def calculate_accuracy_metric_df(dataframe, lag_window, used_parameters, verbose
 
     accuracies = dict()
     for name, a_df in dataframe.groupby(by="Algorithm"):
+        print(f"WIP: {name}")
         computed_precision_dicts[name], computed_recall_dicts[name], computed_accuracy_dicts[name] = calcAccuracy(a_df, used_parameters[name], lag_window)
         best_param = max(computed_accuracy_dicts[name], key=lambda x: computed_accuracy_dicts[name][x])
         accuracy_best_param[name] = best_param
@@ -85,15 +86,14 @@ def calculate_accuracy_metric_df(dataframe, lag_window, used_parameters, verbose
 def main():
     LAG_WINDOW = 200
 
-    CSV_PATH = Path("ResultsCDLG", "with_noise", "algorithm_results.csv")
-    OUT_PATH = Path("ResultsCDLG", "with_noise", "algorithm_results_evaluation.csv")
+    CSV_PATH = Path("ResultsCDLG", "algorithm_results_drift_1_D.csv")
+    OUT_PATH = Path("ResultsCDLG", "algorithm_results_drift_1_D_evaluation.csv")
 
 
     df = readCSV_Lists(CSV_PATH)
     #df.copy()
     #print(df["Algorithm"].unique())
-
-    #['Martjushev ADWIN J', 'Process Graph Metrics', 'Zheng DBSCAN', 'LCDD', 'Maaradji Runs', 'Martjushev J', 'Bose J' 'Bose WC']
+    #['Bose J', 'Bose WC', "Earth Mover's Distance", 'Process Graph Metrics', 'Martjushev ADWIN J', 'LCDD', 'Martjushev J', 'Zheng DBSCAN', 'Maaradji Runs']
 
     used_parameters = {
             "Bose J": ["Window Size", "SW Step Size"],
