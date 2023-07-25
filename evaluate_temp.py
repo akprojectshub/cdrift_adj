@@ -90,7 +90,7 @@ def main():
     LAG_WINDOW = 200
 
     CSV_PATH = Path("ResultsCDLG", "algorithm_results_drift_1_D.csv")
-    OUT_PATH = Path("ResultsCDLG", "algorithm_results_drift_1_D_evaluation.csv")
+    OUT_PATH = Path("ResultsCDLG", f"algorithm_results_drift_1_D_evaluation_{LAG_WINDOW}.csv")
 
 
     df = readCSV_Lists(CSV_PATH)
@@ -111,13 +111,20 @@ def main():
             "LCDD": ["Complete-Window Size", "Detection-Window Size", "Stable Period"]
         }
 
-    df_noiseless = df["Log"]
-
     accuracies, computed_accuracy_dicts, computed_precision_dicts, computed_recall_dicts, accuracy_best_param = calculate_accuracy_metric_df(df, LAG_WINDOW, used_parameters, verbose=False)
-    print(accuracies)
-    print(accuracy_best_param)
-    pd.DataFrame([{'Algorithm': name, 'Accuracy': accuracies[name]} for name in accuracies.keys()]).sort_values(by="Algorithm", ascending=True)
 
+
+    print(accuracies)
+    print()
+    print(accuracy_best_param)
+    print()
+    print(computed_accuracy_dicts)
+    print()
+    print(computed_precision_dicts)
+    print()
+    print(computed_recall_dicts)
+    results = pd.DataFrame([{'Algorithm': name, 'Accuracy': accuracies[name]} for name in accuracies.keys()]).sort_values(by="Algorithm", ascending=True)
+    results.to_csv(OUT_PATH)
 
 if __name__ == '__main__':
     main()
