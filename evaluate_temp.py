@@ -87,7 +87,7 @@ def calculate_accuracy_metric_df(dataframe, lag_window, used_parameters, verbose
     return (accuracies, computed_accuracy_dicts, computed_precision_dicts, computed_recall_dicts, accuracy_best_param)
 
 def main():
-    LAG_WINDOW = 200
+    LAG_WINDOW = 100
 
     CSV_PATH = Path("ResultsCDLG", "algorithm_results_drift_1_D.csv")
     OUT_PATH = Path("ResultsCDLG", f"algorithm_results_drift_1_D_evaluation_{LAG_WINDOW}.csv")
