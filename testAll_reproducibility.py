@@ -466,13 +466,14 @@ def callFunction(arg):
 
 def get_logpaths_with_changepoints_adjusted():
     # Setup all Paths to logs alongside their change point locations
+    #gold_standard = pd.read_csv(Path("EvaluationLogs", "dataset_A", "gold_standard.csv"))
 
-
-    gold_standard = pd.read_csv(Path("EvaluationLogs", "dataset_A", "gold_standard.csv"))
+    path_to_data_on_server = Path("../complex-drift-detection/input/dataset_A/")
+    gold_standard = pd.read_csv(Path(path_to_data_on_server, "gold_standard.csv"))
 
     logPaths_Changepoints = []
     #for root, dirs, files in os.walk(Path("EvaluationLogs", "without_noise")):
-    for root, dirs, files in os.walk(Path("EvaluationLogs", "dataset_A")):
+    for root, dirs, files in os.walk(path_to_data_on_server):
         for file in files:
             if file.endswith('.xes'):
                 path = Path(root, file).as_posix()
@@ -549,7 +550,7 @@ def build_arguments_list(config, logPaths_Changepoints, is_test_run=False):
 
 def main(test_run:bool = False, num_cores:int = None):
     if num_cores is None:
-        num_cores = cpu_count() - 4
+        num_cores = cpu_count() - 2
 
     #logPaths_Changepoints = get_logpaths_with_changepoints()
     logPaths_Changepoints = get_logpaths_with_changepoints_adjusted()
