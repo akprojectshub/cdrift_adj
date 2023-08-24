@@ -467,11 +467,12 @@ def callFunction(arg):
 def get_logpaths_with_changepoints_adjusted():
     # Setup all Paths to logs alongside their change point locations
 
-    gold_standard = pd.read_csv(Path("EvaluationLogs", "drift_1_D", "gold_standard.csv"))
+
+    gold_standard = pd.read_csv(Path("EvaluationLogs", "dataset_A", "gold_standard.csv"))
 
     logPaths_Changepoints = []
     #for root, dirs, files in os.walk(Path("EvaluationLogs", "without_noise")):
-    for root, dirs, files in os.walk(Path("EvaluationLogs", "drift_1_D")):
+    for root, dirs, files in os.walk(Path("EvaluationLogs", "dataset_A")):
         for file in files:
             if file.endswith('.xes'):
                 path = Path(root, file).as_posix()
@@ -548,7 +549,7 @@ def build_arguments_list(config, logPaths_Changepoints, is_test_run=False):
 
 def main(test_run:bool = False, num_cores:int = None):
     if num_cores is None:
-        num_cores = cpu_count() - 2
+        num_cores = cpu_count() - 4
 
     #logPaths_Changepoints = get_logpaths_with_changepoints()
     logPaths_Changepoints = get_logpaths_with_changepoints_adjusted()
@@ -576,7 +577,7 @@ def main(test_run:bool = False, num_cores:int = None):
         else:
             results = p.map(callFunction, arguments)
 
-    # Remove NaN return values from the results, source is Martjushev_ADWIN if the log is too short for the chosen windows
+    # Remove NaN return values from the Results, source is Martjushev_ADWIN if the log is too short for the chosen windows
     results = [result for result in results if not result == np.NaN]
 
     elapsed_time = math.floor(default_timer() - time_start)
@@ -587,7 +588,7 @@ def main(test_run:bool = False, num_cores:int = None):
 
     flattened_results = [res for function_return in results for res in function_return]
     df = pd.DataFrame(flattened_results)
-    df.to_csv("algorithm_results.csv", index=False)
+    df.to_csv(Path('Results', 'dataset_A', "algorithm_results.csv", index=False))
 
 if __name__ == '__main__':
     main()

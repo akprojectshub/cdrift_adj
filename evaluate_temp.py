@@ -1,25 +1,17 @@
-import matplotlib.pyplot as plt
 import pandas as pd
 from cdrift import evaluation
-from cdrift.utils.helpers import readCSV_Lists, convertToTimedelta, importLog
+from cdrift.utils.helpers import readCSV_Lists
 import numpy as np
-from datetime import datetime
-from statistics import mean, harmonic_mean, stdev
-from scipy.stats import iqr
+from statistics import harmonic_mean
 from typing import List
-import seaborn as sns
-import re
-import os
 from pathlib import Path
-
-
 
 
 def calcAccuracy(df: pd.DataFrame, param_names: List[str], lag_window: int):
     """Calculates the Accuracy Metric for the given dataframe by grouping by the given parameters and calculating the mean accuracy
 
     Args:
-        df (pd.DataFrame): The dataframe containing the results to be evaluated
+        df (pd.DataFrame): The dataframe containing the Results to be evaluated
         param_names (List[str]): The names of the parameters of this approach
         lag_window (int): The lag window to be used for the evaluation to determine true positives and false positives
 
@@ -74,7 +66,10 @@ def calculate_accuracy_metric_df(dataframe, lag_window, used_parameters, verbose
     accuracies = dict()
     for name, a_df in dataframe.groupby(by="Algorithm"):
         print(f"WIP: {name}")
-        computed_precision_dicts[name], computed_recall_dicts[name], computed_accuracy_dicts[name] = calcAccuracy(a_df, used_parameters[name], lag_window)
+        computed_precision_dicts[name], computed_recall_dicts[name], computed_accuracy_dicts[name] = calcAccuracy(a_df,
+                                                                                                                  used_parameters[
+                                                                                                                      name],
+                                                                                                                  lag_window)
         try:
             best_param = max(computed_accuracy_dicts[name], key=lambda x: computed_accuracy_dicts[name][x])
         except:
@@ -86,46 +81,71 @@ def calculate_accuracy_metric_df(dataframe, lag_window, used_parameters, verbose
             print(f"{name}: {accuracies[name]}")
     return (accuracies, computed_accuracy_dicts, computed_precision_dicts, computed_recall_dicts, accuracy_best_param)
 
+
 def main():
-    LAG_WINDOW = 100
-
-    CSV_PATH = Path("ResultsCDLG", "algorithm_results_drift_1_D.csv")
-    OUT_PATH = Path("ResultsCDLG", f"algorithm_results_drift_1_D_evaluation_{LAG_WINDOW}.csv")
-
+    LAG_WINDOW = 200
+    CSV_PATH = Path("Results", 'dataset_A', "algorithm_results.csv")
 
     df = readCSV_Lists(CSV_PATH)
-    #df.copy()
-    #print(df["Algorithm"].unique())
-    #['Bose J', 'Bose WC', "Earth Mover's Distance", 'Process Graph Metrics', 'Martjushev ADWIN J', 'LCDD', 'Martjushev J', 'Zheng DBSCAN', 'Maaradji Runs']
 
     used_parameters = {
-            "Bose J": ["Window Size", "SW Step Size"],
-            "Bose WC": ["Window Size", "SW Step Size"],
-            "Martjushev J": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
-            "Martjushev ADWIN J": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
-            #"Martjushev WC": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
-            "Maaradji Runs": ["Window Size", "SW Step Size"],
-            "Earth Mover's Distance": ["Window Size", "SW Step Size"],
-            "Process Graph Metrics": ["Min Adaptive Window", "Max Adaptive Window", "P-Value"],
-            "Zheng DBSCAN": ["MRID", "Epsilon"],
-            "LCDD": ["Complete-Window Size", "Detection-Window Size", "Stable Period"]
-        }
+        "Bose J": ["Window Size", "SW Step Size"],
+        "Bose WC": ["Window Size", "SW Step Size"],
+        "Martjushev J": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
+        "Martjushev ADWIN J": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
+        # "Martjushev WC": ["Min Adaptive Window", "Max Adaptive Window", "P-Value", "ADWIN Step Size"],
+        "Maaradji Runs": ["Window Size", "SW Step Size"],
+        "Earth Mover's Distance": ["Window Size", "SW Step Size"],
+        "Process Graph Metrics": ["Min Adaptive Window", "Max Adaptive Window", "P-Value"],
+        "Zheng DBSCAN": ["MRID", "Epsilon"],
+        "LCDD": ["Complete-Window Size", "Detection-Window Size", "Stable Period"]
+    }
 
-    accuracies, computed_accuracy_dicts, computed_precision_dicts, computed_recall_dicts, accuracy_best_param = calculate_accuracy_metric_df(df, LAG_WINDOW, used_parameters, verbose=False)
+    f1_score_best, f1_score, computed_precision_dicts, computed_recall_dicts, accuracy_best_param = calculate_accuracy_metric_df(
+        df, LAG_WINDOW, used_parameters, verbose=False)
+
+    # Save best results
+    f1_score_best_df = convert_and_save_dict_to_flat_file(f1_score_best)
+    best_param_df = convert_and_save_dict_to_flat_file(accuracy_best_param)
+
+    best_f1_and_parameter_df = pd.merge(f1_score_best_df, best_param_df, on=['Category', 'Parameter'])
+    best_f1_and_parameter_df.rename(columns={'Value_x': 'Best_f1', 'Value_y': 'Best_config'}, inplace=True)
+
+    file_name = CSV_PATH.parts[-1][:-4] + '_best_setting' + f"_{LAG_WINDOW}.csv"
+    best_f1_and_parameter_df.to_csv(Path(CSV_PATH.parent, file_name), index=False)
+
+    # Save all evaluation measures
+    f1_score_df = convert_and_save_dict_to_flat_file(f1_score)
+    precision_df = convert_and_save_dict_to_flat_file(computed_precision_dicts)
+    recall_df = convert_and_save_dict_to_flat_file(computed_recall_dicts)
+
+    evaluation_measure_and_config = pd.merge(f1_score_df, precision_df, on=['Category', 'Parameter'])
+    evaluation_measure_and_config = pd.merge(evaluation_measure_and_config, recall_df, on=['Category', 'Parameter'])
+    evaluation_measure_and_config.rename(columns={'Value_x': 'F1', 'Value_y': 'Precision', 'Value': 'Recall'}, inplace=True)
+
+    file_name = CSV_PATH.parts[-1][:-4] + '_evaluation_measure' + f"_{LAG_WINDOW}.csv"
+    evaluation_measure_and_config.to_csv(Path(CSV_PATH.parent, file_name), index=False)
+
+    return None
 
 
-    print(accuracies)
-    print()
-    print(accuracy_best_param)
-    print()
-    print(computed_accuracy_dicts)
-    print()
-    print(computed_precision_dicts)
-    print()
-    print(computed_recall_dicts)
-    results = pd.DataFrame([{'Algorithm': name, 'Accuracy': accuracies[name]} for name in accuracies.keys()]).sort_values(by="Algorithm", ascending=True)
-    results.to_csv(OUT_PATH)
+def convert_and_save_dict_to_flat_file(data_dict):
+    rows = []
+    for key, value in data_dict.items():
+        if isinstance(value, dict):
+            for sub_key, sub_value in value.items():
+                row = (key, sub_key, sub_value)
+                rows.append(row)
+        else:
+            row = (key, '', value)
+            rows.append(row)
+
+    df = pd.DataFrame(rows, columns=['Category', 'Parameter', 'Value'])
+
+    return df
+
+
+
 
 if __name__ == '__main__':
     main()
-
