@@ -468,7 +468,7 @@ def get_logpaths_with_changepoints_adjusted():
     # Setup all Paths to logs alongside their change point locations
     #gold_standard = pd.read_csv(Path("EvaluationLogs", "dataset_A", "gold_standard.csv"))
 
-    path_to_data_on_server = Path("../complex-drift-detection/input/dataset_A/")
+    path_to_data_on_server = Path("../complex-drift-detection/input/dataset_A/without_noise")
     gold_standard = pd.read_csv(Path(path_to_data_on_server, "gold_standard.csv"))
 
     logPaths_Changepoints = []
