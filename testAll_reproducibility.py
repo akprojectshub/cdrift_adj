@@ -468,12 +468,12 @@ def get_logpaths_with_changepoints_adjusted():
     # Setup all Paths to logs alongside their change point locations
     #gold_standard = pd.read_csv(Path("EvaluationLogs", "dataset_A", "gold_standard.csv"))
 
-    path_to_data_on_server = Path("../complex-drift-detection/input/dataset_A/")
+    path_to_data_on_server = Path("../complex-drift-detection/input/set_A/")
     gold_standard = pd.read_csv(Path(path_to_data_on_server,  "gold_standard.csv"))
 
     logPaths_Changepoints = []
     #for root, dirs, files in os.walk(Path("EvaluationLogs", "without_noise")):
-    for root, dirs, files in os.walk(Path(path_to_data_on_server, "without_noise")):
+    for root, dirs, files in os.walk(Path(path_to_data_on_server)):
         for file in files:
             if file.endswith('.xes'):
                 path = Path(root, file).as_posix()
@@ -589,7 +589,10 @@ def main(test_run:bool = False, num_cores:int = None):
 
     flattened_results = [res for function_return in results for res in function_return]
     df = pd.DataFrame(flattened_results)
-    df.to_csv(Path('Results', 'dataset_A', "algorithm_results.csv", index=False))
+
+    path_to_save_results = Path('Results', 'set_A', "algorithm_results.csv", index=False)
+    path_to_save_results.mkdir(parents=True, exist_ok=True)
+    df.to_csv(Path(path_to_save_results, index=False))
 
 if __name__ == '__main__':
     main()
