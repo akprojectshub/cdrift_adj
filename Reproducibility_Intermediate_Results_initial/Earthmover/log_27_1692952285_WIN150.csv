@@ -1,0 +1,2 @@
+Algorithm,Log Source,Log,Window Size,SW Step Size,Detected Changepoints,Actual Changepoints for Log,F1-Score,Average Lag,Duration,Duration (Seconds),Seconds per Case
+Earth Mover's Distance,without_noise,log_27_1692952285,150,2,"[3352, 3948, 4412, 4446, 5054]","[1464, 2463, 3948, 5054, 5848]",0.4000000000000001,0.0,00:00:00,0.8324751760810614,0.00011613771987738022
