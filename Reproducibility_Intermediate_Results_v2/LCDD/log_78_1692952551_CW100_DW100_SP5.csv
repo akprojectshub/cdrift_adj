@@ -1,0 +1,2 @@
+Algorithm,Log Source,Log,Complete-Window Size,Detection-Window Size,Stable Period,Detected Changepoints,Actual Changepoints for Log,F1-Score,Average Lag,Duration,Duration (Seconds),Seconds per Case
+LCDD,with_noise_10,log_78_1692952551,100,100,5,"[101, 210, 312, 412, 513, 614, 714, 822, 922, 1022, 1128, 1238, 1341, 1441, 1548, 1649, 1749, 1850, 1963, 2077, 2177, 2278, 2383, 2490, 2592, 2695, 2811, 2915]","[1057, 1576]",0.13333333333333333,31.5,00:00:00,0.051105327904224396,1.7465935715729458e-05
