@@ -1,3 +1,0 @@
-Algorithm,Log Source,Log,Window Size,SW Step Size,Detected Changepoints,Actual Changepoints for Log,F1-Score,Average Lag,Duration,Duration (Seconds),Seconds per Case
-Bose J,with_noise_10,log_11_1692952195,550,2,[1870],"[1228, 1853]",0.6666666666666666,17.0,00:00:13,13.698425700888038,0.00447807312876366
-Bose WC,with_noise_10,log_11_1692952195,550,2,[1540],"[1228, 1853]",,,00:00:17,17.169755827635527,0.005612865586020113

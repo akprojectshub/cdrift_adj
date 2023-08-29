@@ -1,2 +1,0 @@
-Algorithm,Log Source,Log,Window Size,SW Step Size,Detected Changepoints,Actual Changepoints for Log,F1-Score,Average Lag,Duration,Duration (Seconds),Seconds per Case
-Maaradji Runs,without_noise,log_18_1692952223,400,2,"[1452, 3786, 4546, 5630, 6966, 8626, 9900]","[1389, 2280, 3635, 4421, 5728, 7035, 7597, 8723, 9996]",0.8750000000000001,99.85714285714286,00:04:37,277.29862730391324,0.024127610484983315

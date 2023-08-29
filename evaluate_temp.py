@@ -82,9 +82,8 @@ def calculate_accuracy_metric_df(dataframe, lag_window, used_parameters, verbose
     return (accuracies, computed_accuracy_dicts, computed_precision_dicts, computed_recall_dicts, accuracy_best_param)
 
 
-def main():
-    LAG_WINDOW = 200
-    CSV_PATH = Path("Results", 'dataset_A', "algorithm_results.csv")
+def main(CSV_PATH, LAG_WINDOW):
+
 
     df = readCSV_Lists(CSV_PATH)
 
@@ -148,4 +147,7 @@ def convert_and_save_dict_to_flat_file(data_dict):
 
 
 if __name__ == '__main__':
-    main()
+    LAG_WINDOW = 200
+    CSV_PATH = Path('Results', 'set_A', "algorithm_results_v1.csv")
+    #CSV_PATH = Path('Results', 'set_A', "algorithm_results_v2.csv")
+    main(CSV_PATH, LAG_WINDOW)

@@ -589,10 +589,7 @@ def main(test_run:bool = False, num_cores:int = None):
 
     flattened_results = [res for function_return in results for res in function_return]
     df = pd.DataFrame(flattened_results)
-
-    path_to_save_results = Path('Results', 'set_A', "algorithm_results.csv", index=False)
-    path_to_save_results.mkdir(parents=True, exist_ok=True)
-    df.to_csv(Path(path_to_save_results, index=False))
+    df.to_csv(Path("algorithm_results_master.csv", index=False))
 
 if __name__ == '__main__':
     main()
