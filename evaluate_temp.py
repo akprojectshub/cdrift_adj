@@ -123,7 +123,7 @@ def main(CSV_PATH, LAG_WINDOW):
     evaluation_measure_and_config.rename(columns={'Value_x': 'F1', 'Value_y': 'Precision', 'Value': 'Recall'}, inplace=True)
 
     file_name = CSV_PATH.parts[-1][:-4] + '_evaluation_measure' + f"_{LAG_WINDOW}.csv"
-    evaluation_measure_and_config.to_csv(Path(CSV_PATH.parent, file_name), index=False)
+    evaluation_measure_and_config.to_csv(file_name, index=False)
 
     return None
 
@@ -148,6 +148,5 @@ def convert_and_save_dict_to_flat_file(data_dict):
 
 if __name__ == '__main__':
     LAG_WINDOW = 200
-    CSV_PATH = Path('Results', 'set_A', "algorithm_results_v1.csv")
-    #CSV_PATH = Path('Results', 'set_A', "algorithm_results_v2.csv")
+    CSV_PATH = Path("algorithm_results.csv")
     main(CSV_PATH, LAG_WINDOW)
