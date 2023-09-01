@@ -1,2 +1,0 @@
-Algorithm,Log Source,Log,P-Value,Window Size,Detected Changepoints,Actual Changepoints for Log,F1-Score,Average Lag,Duration,Duration (Seconds),Seconds per Case
-Martjushev J,with_noise_5,log_62_1692952457,0.55,550,"[1288, 1975, 3488, 4175, 5807, 6100, 7638]","[1344, 2257, 3301, 4214, 5614, 6547, 7639, 8311]",0.6666666666666666,95.2,00:03:59,239.98543096520007,0.024956887579575714
