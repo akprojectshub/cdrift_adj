@@ -592,4 +592,4 @@ def main(test_run:bool = False, num_cores:int = None):
     df.to_csv(Path("algorithm_results.csv", index=False))
 
 if __name__ == '__main__':
-    main()
+    main(test_run = True, num_cores = 30)
