@@ -199,6 +199,7 @@ def testMartjushev(filepath, window_size, F1_LAG, cp_locations, do_j:bool=True, 
     return entries
 
 def testMartjushev_ADWIN(filepath, min_max_window_pair, pvalue, step_size, F1_LAG, cp_locations, do_j:bool=True, do_wc:bool=True, position=None, show_progress_bar=True):
+    #print(filepath)
     log = helpers.importLog(filepath, verbose=False)
 
     min_window, max_window = min_max_window_pair
@@ -213,6 +214,7 @@ def testMartjushev_ADWIN(filepath, min_max_window_pair, pvalue, step_size, F1_LA
 
     if do_j:
         j_start = default_timer()
+        #print(min_window, max_window)
         adwin_j_cp = martjushev.detectChange_ADWIN_JMeasure_KS(log, min_window, max_window, pvalue, step_size, return_pvalues=False, show_progress_bar=show_progress_bar, progressBarPos=position)
         j_dur = default_timer() - j_start
 
@@ -468,14 +470,15 @@ def get_logpaths_with_changepoints_adjusted():
     # Setup all Paths to logs alongside their change point locations
     #gold_standard = pd.read_csv(Path("EvaluationLogs", "dataset_A", "gold_standard.csv"))
 
-    path_to_data_on_server = Path("../complex-drift-detection/input/set_A/")
+    #path_to_data_on_server = Path("../complex-drift-detection/input/set_A/")
+    path_to_data_on_server = Path("../scdd/data/input2/val")
     gold_standard = pd.read_csv(Path(path_to_data_on_server,  "gold_standard.csv"))
 
     logPaths_Changepoints = []
     #for root, dirs, files in os.walk(Path("EvaluationLogs", "without_noise")):
     for root, dirs, files in os.walk(Path(path_to_data_on_server)):
         for file in files:
-            if file.endswith('.xes'):
+            if file.endswith('.xes') and file in gold_standard.log_name.to_list():
                 path = Path(root, file).as_posix()
                 log_name = Path(root, file).stem + Path(root, file).suffix
                 change_points_temp = gold_standard[gold_standard.log_name == log_name].change_point
@@ -592,4 +595,4 @@ def main(test_run:bool = False, num_cores:int = None):
     df.to_csv(Path("algorithm_results.csv", index=False))
 
 if __name__ == '__main__':
-    main(test_run = True, num_cores = 30)
+    main(test_run = False, num_cores = 80)
